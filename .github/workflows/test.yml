@@ -1,0 +1,26 @@
+name: Tests / test-user-mirror
+
+on:
+  push:
+  pull_request_target:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source codes
+        uses: actions/checkout@v3
+      - name: Mirror Github to Gitee with white list
+        uses: ./.
+        with:
+          src: github/hwhsu1231
+          dst: gitee/hwhsu1231
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          dst_token:  ${{ secrets.GITEE_TOKEN }}
+          # static_list: 'hub-mirror-action,hashes, simple-spring'
+          # force_update: true
+          # debug: true
+          # mappings: 'hashes=>hashes_gitee'

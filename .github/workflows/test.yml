@@ -20,6 +20,7 @@ jobs:
           dst: gitee/hwhsu1231
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token:  ${{ secrets.GITEE_TOKEN }}
+          white_list: ${{ env.GITHUB_REPOSITORY }}
           # static_list: 'hub-mirror-action,hashes, simple-spring'
           # force_update: true
           # debug: true

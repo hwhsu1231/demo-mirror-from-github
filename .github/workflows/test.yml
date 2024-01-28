@@ -11,8 +11,14 @@ jobs:
     name: Run
     runs-on: ubuntu-latest
     steps:
+      - name: Check secrets
+        run: |
+          echo "secrets.GITEE_PRIVATE_KEY = ${{ secrets.GITEE_PRIVATE_KEY }}"
+          echo "secrets.GITEE_TOKEN = ${{ secrets.GITEE_TOKEN }}"
+
       - name: Checkout source codes
         uses: actions/checkout@v3
+
       - name: Mirror Github to Gitee with the current repo
         uses: Yikun/hub-mirror-action@master
         with:

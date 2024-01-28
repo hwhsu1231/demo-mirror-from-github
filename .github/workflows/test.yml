@@ -14,7 +14,7 @@ jobs:
       - name: Checkout source codes
         uses: actions/checkout@v3
       - name: Mirror Github to Gitee with white list
-        uses: ./.
+        uses: Yikun/hub-mirror-action@master
         with:
           src: github/hwhsu1231
           dst: gitee/hwhsu1231

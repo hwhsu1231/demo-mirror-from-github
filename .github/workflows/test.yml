@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: Checkout source codes
         uses: actions/checkout@v3
-      - name: Mirror Github to Gitee with white list
+      - name: Mirror Github to Gitee with the current repo
         uses: Yikun/hub-mirror-action@master
         with:
           src: github/hwhsu1231
           dst: gitee/hwhsu1231
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token:  ${{ secrets.GITEE_TOKEN }}
-          white_list: ${{ env.GITHUB_REPOSITORY }}
-          # static_list: 'hub-mirror-action,hashes, simple-spring'
+          static_list: '${{ env.GITHUB_REPOSITORY }}'
+          # white_list: ${{ env.GITHUB_REPOSITORY }}
           # force_update: true
           # debug: true
           # mappings: 'hashes=>hashes_gitee'

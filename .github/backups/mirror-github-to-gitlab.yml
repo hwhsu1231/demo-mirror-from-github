@@ -1,0 +1,36 @@
+name: mirror-github-to-gitlab
+
+on:
+  push:
+  pull_request_target:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  mirror-github-to-gitee:
+    name: Mirror from GitHub to GitLab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check secrets
+        run: |
+          echo "secrets.GITEE_PRIVATE_KEY = ${{ secrets.GITEE_PRIVATE_KEY }}"
+          echo "secrets.GITEE_TOKEN = ${{ secrets.GITEE_TOKEN }}"
+
+      - name: Checkout to ${{ github.ref }}
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Mirror + trigger CI
+        uses: SvanBoxel/gitlab-mirror-and-ci-action@master
+        with:
+          args: "https://gitlab.com/<namespace>/<repository>"
+        env:
+          FOLLOW_TAGS: "false"
+          FORCE_PUSH: "false"
+          GITLAB_HOSTNAME: "gitlab.com"
+          GITLAB_USERNAME: "svboxel"
+          GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD }}
+          GITLAB_PROJECT_ID: "<GitLab project ID>"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  

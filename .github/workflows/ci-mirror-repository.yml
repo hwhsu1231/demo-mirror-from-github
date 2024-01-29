@@ -1,4 +1,4 @@
-name: 'GitHub Actions Mirror'
+name: ci-mirror-repository
 
 on:
   workflow_dispatch:
@@ -9,13 +9,19 @@ on:
     - cron: '20 20 * * *'
 
 jobs:
-  mirror_to_gitlab:
+  mirror-to-gitlab:
     runs-on: ubuntu-latest
     steps:
+      - name: Check contexts
+        run: |
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.event.repository.name = ${{ github.event.repository.name }}"
+
       - name: Checkout to ${{ github.ref }}
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
+          # 0 indicates all history for all branches and tags.
           fetch-depth: 0
 
       - name: Mirror to GitLab
@@ -26,23 +32,20 @@ jobs:
           ssh_private_key:
             ${{ secrets.GITEE_PRIVATE_KEY }}
 
-  mirror_to_gitee:
+  mirror-to-gitee:
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout to ${{ github.ref }}
-      #   uses: actions/checkout@v3.3.0
-      #   with:
-      #     ref: ${{ github.ref }}
-      #     fetch-depth: 0
+      - name: Check contexts
+        run: |
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.event.repository.name = ${{ github.event.repository.name }}"
+
       - name: Checkout to ${{ github.ref }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
-
-      - name: Echo something
-        run: |
-          echo "github.event.repository.name = ${{ github.event.repository.name }}"
-          echo "github.repository = ${{ github.repository }}"
+          # 0 indicates all history for all branches and tags.
+          fetch-depth: 0
 
       - name: Mirror to Gitee
         uses: pixta-dev/repository-mirroring-action@v1.1.1

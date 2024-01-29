@@ -34,10 +34,15 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0
 
+      - name: Echo something
+        run: |
+          echo "github.event.repository.name = ${{ github.event.repository.name }}"
+
       - name: Mirror to Gitee
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with:
           target_repo_url:
             git@gitee.com:hwhsu1231/demo-github-gitee-mirror.git
+            # git@gitee.com:${{ env.GITHUB_REPOSITORY }}.git
           ssh_private_key:
             ${{ secrets.GITEE_PRIVATE_KEY }}

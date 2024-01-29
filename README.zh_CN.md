@@ -1,5 +1,13 @@
 # 示范 GitHub 和 Gitee 镜像
 
+<ul>
+  <li><a href="./README.md"><code>en</code> : English</a></li>
+  <li><a href="./README.zh_CN.md"><code>zh_CN</code> : 简体中文</a></li>
+  <li><a href="./README.zh_TW.md"><code>zh_TW</code> : 繁體中文</a></li>
+</ul>
+
+## 链接
+
 * GitHub：https://github.com/hwhsu1231/demo-github-gitee-mirror
 * Gitee：https://gitee.com/hwhsu1231/demo-github-gitee-mirror
 * GitLab：https://gitlab.com/hwhsu1231/demo-github-gitee-mirror

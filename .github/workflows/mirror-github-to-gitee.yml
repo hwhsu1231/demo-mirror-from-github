@@ -1,4 +1,4 @@
-name: Tests / test-user-mirror
+name: mirror-github-to-gitee
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  run:
-    name: Run
+  mirror-github-to-gitee:
+    name: Mirror from GitHub to Gitee
     runs-on: ubuntu-latest
     steps:
       - name: Check secrets
@@ -16,19 +16,16 @@ jobs:
           echo "secrets.GITEE_PRIVATE_KEY = ${{ secrets.GITEE_PRIVATE_KEY }}"
           echo "secrets.GITEE_TOKEN = ${{ secrets.GITEE_TOKEN }}"
 
-      - name: Checkout source codes
+      - name: Checkout to ${{ github.ref }}
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
-      - name: Mirror Github to Gitee with the current repo
-        uses: Yikun/hub-mirror-action@master
+      - uses: Yikun/hub-mirror-action@master
         with:
           src: github/hwhsu1231
           dst: gitee/hwhsu1231
           dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
           dst_token:  ${{ secrets.GITEE_TOKEN }}
           static_list: 'demo-github-gitee-mirror'
-          # static_list: '${{ env.GITHUB_REPOSITORY }}'
-          # white_list: ${{ env.GITHUB_REPOSITORY }}
-          # force_update: true
-          # debug: true
-          # mappings: 'hashes=>hashes_gitee'
+          force_update: true

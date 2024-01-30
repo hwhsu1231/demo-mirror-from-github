@@ -13,8 +13,8 @@
   <a href='https://gitee.com/hwhsu1231/demo-mirror-from-github/stargazers'><img src='https://gitee.com/hwhsu1231/demo-mirror-from-github/badge/star.svg?theme=dark' alt='star'></img></a>
   <a href='https://gitee.com/hwhsu1231/demo-mirror-from-github/members'><img src='https://gitee.com/hwhsu1231/demo-mirror-from-github/badge/fork.svg?theme=dark' alt='fork'></img></a>
   <br />
-  <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github/-/starrers"><img alt="GitLab Stars" src="https://img.shields.io/gitlab/stars/hwhsu1231%2Fdemo-mirror-from-github?style=flat&logo=gitlab"></a>
-  <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github/-/forks"><img alt="GitLab Forks" src="https://img.shields.io/gitlab/forks/hwhsu1231%2Fdemo-mirror-from-github?style=flat&logo=gitlab"></a>
+  <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github/-/starrers"><img alt="GitLab Stars" src="https://img.shields.io/gitlab/stars/hwhsu1231%2Fdemo-mirror-from-github?gitlab_url=https%3A%2F%2Fgitlab.com&style=flat&logo=gitlab"></a>
+  <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github/-/forks"><img alt="GitLab Forks" src="https://img.shields.io/gitlab/forks/hwhsu1231%2Fdemo-mirror-from-github?gitlab_url=https%3A%2F%2Fgitlab.com&style=flat&logo=gitlab"></a>
 </div>
 
 ## Links

@@ -1,4 +1,4 @@
-# 示范 GitHub 和 Gitee 镜像
+# 示范从 GitHub 进行镜像
 
 <ul>
   <li><a href="./README.md"><code>en</code> : English</a></li>

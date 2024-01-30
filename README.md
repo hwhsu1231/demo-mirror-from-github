@@ -1,4 +1,4 @@
-# Demo GitHub and Gitee Mirror
+# Demo mirror from GitHub
 
 <ul>
   <li><a href="./README.md"><code>en</code> : English</a></li>

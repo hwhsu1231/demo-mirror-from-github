@@ -6,6 +6,12 @@
   <li><a href="./README.zh_TW.md"><code>zh_TW</code> : 繁體中文</a></li>
 </ul>
 
+<div align="center">
+  <a href="https://github.com/hwhsu1231/demo-mirror-from-github/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a>
+  <a href="https://github.com/hwhsu1231/demo-mirror-from-github/watchers"><img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a>
+  <a href="https://github.com/hwhsu1231/demo-mirror-from-github/forks"><img alt="GitHub Repo watchers" src="https://img.shields.io/github/watchers/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a>
+</div>
+
 ## 連結
 
 * GitHub：https://github.com/hwhsu1231/demo-github-gitee-mirror

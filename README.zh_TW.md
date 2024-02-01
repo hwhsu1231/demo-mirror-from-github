@@ -6,7 +6,7 @@
   <li><a href="./README.zh_TW.md"><code>zh_TW</code> : 繁體中文</a></li>
 </ul>
 
-<table>
+<table align="center">
   <thead>
     <tr>
       <th>GitHub</th>

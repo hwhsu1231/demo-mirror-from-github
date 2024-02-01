@@ -18,7 +18,7 @@
     <tr>
       <td>
         <a href="https://github.com/hwhsu1231/demo-mirror-from-github/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a><br />
-        <a href="https://github.com/hwhsu1231/demo-mirror-from-github/watchers"><img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a>
+        <a href="https://github.com/hwhsu1231/demo-mirror-from-github/forks"><img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/hwhsu1231/demo-mirror-from-github?style=flat&logo=github"></a>
       </td>
       <td>
         <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github/-/starrers"><img alt="GitLab Stars" src="https://img.shields.io/gitlab/stars/hwhsu1231%2Fdemo-mirror-from-github?gitlab_url=https%3A%2F%2Fgitlab.com&style=flat&logo=gitlab"></a><br />
@@ -35,5 +35,5 @@
 ## 連結
 
 * GitHub：https://github.com/hwhsu1231/demo-github-gitee-mirror
-* Gitee：https://gitee.com/hwhsu1231/demo-github-gitee-mirror
 * GitLab：https://gitlab.com/hwhsu1231/demo-github-gitee-mirror
+* Gitee：https://gitee.com/hwhsu1231/demo-github-gitee-mirror

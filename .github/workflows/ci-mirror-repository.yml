@@ -16,7 +16,7 @@ jobs:
         run: |
           echo "github.repository = ${{ github.repository }}"
           echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to ${{ github.ref }}
+      - name: Checkout to '${{ github.ref }}'
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "github.repository = ${{ github.repository }}"
           echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to ${{ github.ref }}
+      - name: Checkout to '${{ github.ref }}'
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "github.repository = ${{ github.repository }}"
           echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to ${{ github.ref }}
+      - name: Checkout to '${{ github.ref }}'
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}

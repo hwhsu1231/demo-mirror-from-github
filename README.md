@@ -39,3 +39,4 @@
 * GitHub: https://github.com/hwhsu1231/demo-mirror-from-github
 * GitLab: https://gitlab.com/hwhsu1231/demo-mirror-from-github
 * Gitee: https://gitee.com/hwhsu1231/demo-mirror-from-github
+* GitFlic: https://gitflic.ru/project/hwhsu1231/demo-mirror-from-github

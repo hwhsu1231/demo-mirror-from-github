@@ -28,7 +28,7 @@ jobs:
           target_repo_url:
             git@gitlab.com:${{ github.repository }}.git
           ssh_private_key:
-            ${{ secrets.GITEE_PRIVATE_KEY }}
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitee:
     runs-on: ubuntu-latest
@@ -49,7 +49,7 @@ jobs:
           target_repo_url:
             git@gitee.com:${{ github.repository }}.git
           ssh_private_key:
-            ${{ secrets.GITEE_PRIVATE_KEY }}
+            ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitflic:
     runs-on: ubuntu-latest
@@ -70,4 +70,4 @@ jobs:
           target_repo_url:
             git@gitflic.ru:${{ github.repository }}.git
           ssh_private_key:
-            ${{ secrets.GITEE_PRIVATE_KEY }}
+            ${{ secrets.SSH_PRIVATE_KEY }}

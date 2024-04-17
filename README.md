@@ -37,7 +37,7 @@
 > [!NOTE]  
 > Highlights information that users should take into account, even when skimming.
 
-> [!TIP]
+> [!TIP]  
 > Optional information to help a user be more successful.
 
 > [!IMPORTANT]  
@@ -46,7 +46,7 @@
 > [!WARNING]  
 > Critical content demanding immediate user attention due to potential risks.
 
-> [!CAUTION]   
+> [!CAUTION]  
 > Negative potential consequences of an action.
 
 ## Links

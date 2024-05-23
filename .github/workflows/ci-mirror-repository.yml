@@ -20,15 +20,12 @@ jobs:
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
-          # 0 indicates all history for all branches and tags.
-          fetch-depth: 0
+          fetch-depth: 0  # 0 indicates all history for all branches and tags.
       - name: Mirror to GitLab
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with:
-          target_repo_url:
-            git@gitlab.com:${{ github.repository }}.git
-          ssh_private_key:
-            ${{ secrets.SSH_PRIVATE_KEY }}
+          target_repo_url: git@gitlab.com:${{ github.repository }}.git
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitee:
     runs-on: ubuntu-latest
@@ -41,15 +38,12 @@ jobs:
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
-          # 0 indicates all history for all branches and tags.
-          fetch-depth: 0
+          fetch-depth: 0  # 0 indicates all history for all branches and tags.
       - name: Mirror to Gitee
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with:
-          target_repo_url:
-            git@gitee.com:${{ github.repository }}.git
-          ssh_private_key:
-            ${{ secrets.SSH_PRIVATE_KEY }}
+          target_repo_url: git@gitee.com:${{ github.repository }}.git
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitflic:
     runs-on: ubuntu-latest
@@ -62,12 +56,27 @@ jobs:
         uses: actions/checkout@v3.3.0
         with:
           ref: ${{ github.ref }}
-          # 0 indicates all history for all branches and tags.
-          fetch-depth: 0
+          fetch-depth: 0  # 0 indicates all history for all branches and tags.
       - name: Mirror to GitFlic
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with:
-          target_repo_url:
-            git@gitflic.ru:${{ github.repository }}.git
-          ssh_private_key:
-            ${{ secrets.SSH_PRIVATE_KEY }}
+          target_repo_url: git@gitflic.ru:${{ github.repository }}.git
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+  to-gitea:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check contexts
+        run: |
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.event.repository.name = ${{ github.event.repository.name }}"
+      - name: Checkout to '${{ github.ref }}'
+        uses: actions/checkout@v3.3.0
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0  # 0 indicates all history for all branches and tags.
+      - name: Mirror to Gitea
+        uses: pixta-dev/repository-mirroring-action@v1.1.1
+        with:
+          target_repo_url: git@gitea.com:${{ github.repository }}.git
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

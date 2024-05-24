@@ -22,7 +22,7 @@ jobs:
 
   to-gitlab:
     needs: check-preconditions
-    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
+    if: '!contains(needs.check-preconditions.outputs.results, "failure")'
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -42,7 +42,7 @@ jobs:
 
   to-gitee:
     needs: check-preconditions
-    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
+    if: '!contains(needs.check-preconditions.outputs.results, "failure")'
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -62,7 +62,7 @@ jobs:
 
   to-gitflic:
     needs: check-preconditions
-    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
+    if: '!contains(needs.check-preconditions.outputs.results, "failure")'
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -82,7 +82,7 @@ jobs:
 
   to-gitea:
     needs: check-preconditions
-    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
+    if: '!contains(needs.check-preconditions.outputs.results, "failure")'
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts

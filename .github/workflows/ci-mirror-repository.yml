@@ -9,7 +9,20 @@ on:
     - cron: '20 20 * * *'
 
 jobs:
+  check-preconditions:
+    runs-on: ubuntu-latest
+    outputs:
+      results: ${{ join(steps.*.outcome) }}
+    steps:
+      - id: secrets
+        continue-on-error: true
+        run: '[ -n "$SSH_PRIVATE_KEY" ]'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
   to-gitlab:
+    needs: check-preconditions
+    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -28,6 +41,8 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitee:
+    needs: check-preconditions
+    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -46,6 +61,8 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitflic:
+    needs: check-preconditions
+    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts
@@ -64,6 +81,8 @@ jobs:
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   to-gitea:
+    needs: check-preconditions
+    if: "!contains(needs.check-preconditions.outputs.results, 'failure')"
     runs-on: ubuntu-latest
     steps:
       - name: Check contexts

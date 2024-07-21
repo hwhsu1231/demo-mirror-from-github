@@ -54,4 +54,7 @@
 * GitHub: https://github.com/hwhsu1231/demo-mirror-from-github
 * GitLab: https://gitlab.com/hwhsu1231/demo-mirror-from-github
 * Gitee: https://gitee.com/hwhsu1231/demo-mirror-from-github
+* GitCode: https://gitcode.com/hwhsu1231/demo-mirror-from-github
 * GitFlic: https://gitflic.ru/project/hwhsu1231/demo-mirror-from-github
+* Gitea: https://gitea.com/hwhsu1231/demo-mirror-from-github
+* Codeberg: https://codeberg.org/hwhsu1231/demo-mirror-from-github

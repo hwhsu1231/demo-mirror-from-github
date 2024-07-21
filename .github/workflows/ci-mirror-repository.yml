@@ -20,82 +20,38 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-  to-gitlab:
-    needs: check-preconditions
-    if: (!contains(needs.check-preconditions.outputs.results, 'failure'))
+  get-matrix:
     runs-on: ubuntu-latest
+    outputs:
+      SERVER_LIST: ${{ steps.gvl.outputs.SERVER_LIST }}
     steps:
-      - name: Check contexts
-        run: |
-          echo "github.repository = ${{ github.repository }}"
-          echo "github.event.repository.name = ${{ github.event.repository.name }}"
       - name: Checkout to '${{ github.ref }}'
-        uses: actions/checkout@v3.3.0
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
-          fetch-depth: 0  # 0 indicates all history for all branches and tags.
-      - name: Mirror to GitLab
-        uses: pixta-dev/repository-mirroring-action@v1.1.1
-        with:
-          target_repo_url: git@gitlab.com:${{ github.repository }}.git
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Get SERVER_LIST from mirrors.json
+        id: gvl
+        shell: bash
+        run: |
+          JQ_FILE="mirrors.json"
+          JQ_FILTER=".mirrors | map(.SERVER)"
+          SERVER_LIST=$(jq -c "${JQ_FILTER}" "${JQ_FILE}")
+          echo "SERVER_LIST=${SERVER_LIST}" >> ${GITHUB_OUTPUT}
+          echo "SERVER_LIST:"
+          echo "${SERVER_LIST}" | jq "."
 
-  to-gitee:
-    needs: check-preconditions
-    if: (!contains(needs.check-preconditions.outputs.results, 'failure'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check contexts
-        run: |
-          echo "github.repository = ${{ github.repository }}"
-          echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to '${{ github.ref }}'
-        uses: actions/checkout@v3.3.0
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0  # 0 indicates all history for all branches and tags.
-      - name: Mirror to Gitee
-        uses: pixta-dev/repository-mirroring-action@v1.1.1
-        with:
-          target_repo_url: git@gitee.com:${{ github.repository }}.git
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-  to-gitflic:
-    needs: check-preconditions
-    if: (!contains(needs.check-preconditions.outputs.results, 'failure'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check contexts
-        run: |
-          echo "github.repository = ${{ github.repository }}"
-          echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to '${{ github.ref }}'
-        uses: actions/checkout@v3.3.0
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0  # 0 indicates all history for all branches and tags.
-      - name: Mirror to GitFlic
-        uses: pixta-dev/repository-mirroring-action@v1.1.1
-        with:
-          target_repo_url: git@gitflic.ru:${{ github.repository }}.git
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-  to-gitea:
-    needs: check-preconditions
-    if: (!contains(needs.check-preconditions.outputs.results, 'failure'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check contexts
-        run: |
-          echo "github.repository = ${{ github.repository }}"
-          echo "github.event.repository.name = ${{ github.event.repository.name }}"
-      - name: Checkout to '${{ github.ref }}'
-        uses: actions/checkout@v3.3.0
-        with:
-          ref: ${{ github.ref }}
-          fetch-depth: 0  # 0 indicates all history for all branches and tags.
-      - name: Mirror to Gitea
-        uses: pixta-dev/repository-mirroring-action@v1.1.1
-        with:
-          target_repo_url: git@gitea.com:${{ github.repository }}.git
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+  matrix:
+    needs: get-matrix
+    secrets: inherit
+    concurrency:
+      group: ${{ github.workflow }}-${{ matrix.SERVER }}
+      cancel-in-progress: true
+    strategy:
+      matrix: 
+        SERVER: ${{ fromJSON(needs.get-matrix.outputs.SERVER_LIST) }}
+      fail-fast: false
+    uses: ./.github/workflows/use-mirror-repository.yml
+    with:
+      GIT_TARGET_SERVER: ${{ matrix.SERVER }}
+      GIT_TARGET_REPO: ${{ github.repository }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

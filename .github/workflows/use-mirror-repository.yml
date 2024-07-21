@@ -1,0 +1,39 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: use-mirror-repository
+
+on:
+  workflow_call:
+    inputs:
+      GIT_TARGET_SERVER:  # required
+        type: string
+        required: true
+      GIT_TARGET_REPO:    # required
+        type: string
+        required: true
+      SSH_PRIVATE_KEY:    # required
+        type: string
+        required: true
+
+jobs:
+  mirror-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check contexts
+        run: |
+          echo "inputs.GIT_TARGET_SERVER = ${{ inputs.GIT_TARGET_SERVER }}"
+          echo "inputs.GIT_TARGET_REPO = ${{ inputs.GIT_TARGET_REPO }}"
+          echo "inputs.SSH_PRIVATE_KEY = ${{ inputs.SSH_PRIVATE_KEY }}"
+
+      - name: Checkout to '${{ github.ref }}'
+        uses: actions/checkout@v3.3.0
+        with:
+          ref: ${{ github.ref }}
+          fetch-depth: 0  # 0 indicates all history for all branches and tags.
+
+      - name: Mirror to GitLab
+        uses: pixta-dev/repository-mirroring-action@v1.1.1
+        with:
+          target_repo_url: git@${{ inputs.GIT_TARGET_SERVER }}:${{ inputs.GIT_TARGET_REPO }}.git
+          ssh_private_key: ${{ inputs.SSH_PRIVATE_KEY }}

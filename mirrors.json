@@ -7,16 +7,10 @@
       "SERVER" : "gitee.com"
     },
     {
-      "SERVER" : "gitcode.com"
-    },
-    {
       "SERVER" : "gitflic.ru"
     },
     {
       "SERVER" : "gitea.com"
-    },
-    {
-      "SERVER" : "codeberg.com"
     }
   ]
 }

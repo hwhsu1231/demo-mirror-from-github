@@ -42,7 +42,6 @@ jobs:
 
   matrix:
     needs: get-matrix
-    secrets: inherit
     concurrency:
       group: ${{ github.workflow }}-${{ matrix.SERVER }}
       cancel-in-progress: true
@@ -54,4 +53,5 @@ jobs:
     with:
       GIT_TARGET_SERVER: ${{ matrix.SERVER }}
       GIT_TARGET_REPO: ${{ github.repository }}
+    secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

@@ -7,13 +7,13 @@ on:
   workflow_call:
     inputs:
       GIT_TARGET_SERVER:  # required
-        type: string
         required: true
+        type: string
       GIT_TARGET_REPO:    # required
-        type: string
         required: true
-      SSH_PRIVATE_KEY:    # required
         type: string
+    secrets:
+      SSH_PRIVATE_KEY:    # required
         required: true
 
 jobs:
@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "inputs.GIT_TARGET_SERVER = ${{ inputs.GIT_TARGET_SERVER }}"
           echo "inputs.GIT_TARGET_REPO = ${{ inputs.GIT_TARGET_REPO }}"
-          echo "inputs.SSH_PRIVATE_KEY = ${{ inputs.SSH_PRIVATE_KEY }}"
+          echo "secrets.SSH_PRIVATE_KEY = ${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Checkout to '${{ github.ref }}'
         uses: actions/checkout@v3.3.0
@@ -32,8 +32,8 @@ jobs:
           ref: ${{ github.ref }}
           fetch-depth: 0  # 0 indicates all history for all branches and tags.
 
-      - name: Mirror to GitLab
+      - name: Mirror to '${{ inputs.GIT_TARGET_SERVER }}'
         uses: pixta-dev/repository-mirroring-action@v1.1.1
         with:
           target_repo_url: git@${{ inputs.GIT_TARGET_SERVER }}:${{ inputs.GIT_TARGET_REPO }}.git
-          ssh_private_key: ${{ inputs.SSH_PRIVATE_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}

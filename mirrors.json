@@ -4,10 +4,16 @@
       "SERVER" : "gitlab.com"
     },
     {
-      "SERVER" : "gitee.com"
+      "SERVER" : "bitbucket.org"
     },
     {
       "SERVER" : "gitcode.com"
+    },
+    {
+      "SERVER" : "gitee.com"
+    },
+    {
+      "SERVER" : "atomgit.com"
     },
     {
       "SERVER" : "gitflic.ru"

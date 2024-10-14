@@ -9,16 +9,49 @@ on:
     - cron: '20 20 * * *'
 
 jobs:
-  check-preconditions:
+  # check-preconditions:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     results: ${{ join(steps.*.outcome) }}
+  #   steps:
+  #     - id: secrets
+  #       continue-on-error: true
+  #       run: '[ -n "$SSH_PRIVATE_KEY" ]'
+  #       env:
+  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  precondition:
     runs-on: ubuntu-latest
-    outputs:
-      results: ${{ join(steps.*.outcome) }}
     steps:
-      - id: secrets
-        continue-on-error: true
-        run: '[ -n "$SSH_PRIVATE_KEY" ]'
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Check Secrets
+        shell: bash
+        run: |
+          SECRETS_EXIST=true
+          if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
+            echo "secrets.SSH_PRIVATE_KEY is missing."
+            SECRETS_EXIST=false
+          fi
+          if [ "$SECRETS_EXIST" = "false" ]; then
+            exit 1
+          fi
+      # - name: Check Variables
+      #   shell: bash
+      #   run: |
+      #     VARIABLES_EXIST=true
+      #     if [ -z "${{ vars.ACTOR_ID }}" ]; then
+      #       echo "vars.ACTOR_ID is missing."
+      #       VARIABLES_EXIST=false
+      #     fi
+      #     if [ -z "${{ vars.ACTOR_NAME }}" ]; then
+      #       echo "vars.ACTOR_NAME is missing."
+      #       VARIABLES_EXIST=false
+      #     fi
+      #     if [ -z "${{ vars.ACTOR_LOGIN }}" ]; then
+      #       echo "vars.ACTOR_LOGIN is missing."
+      #       VARIABLES_EXIST=false
+      #     fi
+      #     if [ "$VARIABLES_EXIST" = "false" ]; then
+      #       exit 1
+      #     fi
 
   get-matrix:
     runs-on: ubuntu-latest
@@ -46,7 +79,7 @@ jobs:
       group: ${{ github.workflow }}-${{ matrix.SERVER }}
       cancel-in-progress: true
     strategy:
-      matrix: 
+      matrix:
         SERVER: ${{ fromJSON(needs.get-matrix.outputs.SERVER_LIST) }}
       fail-fast: false
     uses: ./.github/workflows/use-mirror-repository.yml

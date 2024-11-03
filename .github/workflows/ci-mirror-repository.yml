@@ -94,7 +94,7 @@ jobs:
 
           # MATRIX=$(jq -c '{include: .mirrors}' mirrors.json)
 
-          MATRIX=$(jq -c '{ include: [ .mirrors[] ]}' mirrors.json)
+          MATRIX=$(jq -c '{ include: [ .mirrors[] | { SERVER: .SERVER } ] }' mirrors.json)
 
           echo "MATRIX:"
           echo "${MATRIX}" | jq "."

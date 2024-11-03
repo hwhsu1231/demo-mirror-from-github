@@ -107,7 +107,7 @@ jobs:
                   if .REPOSITORY != \"[default]\" then
                     .REPOSITORY
                   else
-                    \"${GITHUB_REPOSITORY}\"
+                    \"${{ github.repository }}\"
                   end
                 )
               }

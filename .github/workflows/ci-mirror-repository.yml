@@ -95,7 +95,7 @@ jobs:
           MATRIX=$(jq -c '{include: .mirrors}' mirrors.json)
 
           echo "MATRIX:"
-          echo "${MATRIX}"
+          echo "${MATRIX}" | jq "."
 
   # matrix:
   #   needs: get-matrix

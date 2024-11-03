@@ -83,14 +83,19 @@ jobs:
           # echo "SERVER_LIST:"
           # echo "${SERVER_LIST}" | jq "."
 
-          DEFAULT_REPO="${GITHUB_REPOSITORY}"
-          MATRIX=$(jq -c --arg default_repo "$DEFAULT_REPO" '
-            { include: [
-              .mirrors[] | {
-                SERVER: .SERVER,
-                REPOSITORY: if .REPOSITORY == "[default]" then $default_repo else .REPOSITORY end
-              }
-            ]}' mirrors.json)
+          # DEFAULT_REPO="${GITHUB_REPOSITORY}"
+          # MATRIX=$(jq -c --arg default_repo "$DEFAULT_REPO" '
+          #   { include: [
+          #     .mirrors[] | {
+          #       SERVER: .SERVER,
+          #       REPOSITORY: if .REPOSITORY == "[default]" then $default_repo else .REPOSITORY end
+          #     }
+          #   ]}' mirrors.json)
+
+          MATRIX=$(jq -c '{include: .mirrors}' mirrors.json)
+
+          echo "MATRIX:"
+          echo "${MATRIX}"
 
   # matrix:
   #   needs: get-matrix

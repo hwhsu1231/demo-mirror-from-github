@@ -20,10 +20,13 @@ jobs:
   mirror-repository:
     runs-on: ubuntu-latest
     steps:
-      - name: Check contexts
+      - name: Print Contexts/Inputs/Secrets
         run: |
+          echo "[Contexts]"
+          echo "[Inputs]"
           echo "inputs.GIT_TARGET_SERVER = ${{ inputs.GIT_TARGET_SERVER }}"
           echo "inputs.GIT_TARGET_REPO = ${{ inputs.GIT_TARGET_REPO }}"
+          echo "[Secrets]"
           echo "secrets.SSH_PRIVATE_KEY = ${{ secrets.SSH_PRIVATE_KEY }}"
 
       - name: Checkout to '${{ github.ref }}'

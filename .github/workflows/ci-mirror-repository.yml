@@ -94,8 +94,7 @@ jobs:
                   REPOSITORY: (if .REPOSITORY == "[default]" then $default_repo else .REPOSITORY end)
                 }
               ]
-            }'
-          mirrors.json)
+            }' mirrors.json)
 
           # MATRIX=$(jq -c '{include: .mirrors}' mirrors.json)
 

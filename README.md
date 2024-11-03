@@ -116,59 +116,59 @@
   <tbody>
     <!-- Main -->
     <tr>
-      <th rowspan="3" style="text-align: center; vertical-align: middle;">Main</th>
-      <th style="text-align: center; vertical-align: middle;">GitHub</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th rowspan="3" style="text-align: left; vertical-align: middle;">Main</th>
+      <th style="text-align: left; vertical-align: middle;">GitHub</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://github.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">GitCode</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">GitCode</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://gitcode.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">GitFlic</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">GitFlic</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://gitflic.ru/project/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <!-- Mirror -->
     <tr>
-      <th rowspan="6" style="text-align: center; vertical-align: middle;">Mirror</th>
-      <th style="text-align: center; vertical-align: middle;">GitLab</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th rowspan="6" style="text-align: left; vertical-align: middle;">Mirror</th>
+      <th style="text-align: left; vertical-align: middle;">GitLab</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://gitlab.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">Gitee</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">Gitee</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://gitee.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">Gitea</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">Gitea</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://gitea.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">AtomGit</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">AtomGit</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://atomgit.com/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">Codeberg</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">Codeberg</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://codeberg.org/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>
     <tr>
-      <th style="text-align: center; vertical-align: middle;">BitBucket</th>
-      <td style="text-align: center; vertical-align: middle;" align="center">
+      <th style="text-align: left; vertical-align: middle;">BitBucket</th>
+      <td style="text-align: left; vertical-align: middle;" align="center">
         <a href="https://bitbucket.org/hwhsu1231/demo-mirror-from-github" target="_blank">hwhsu1231/demo-mirror-from-github</a>
       </td>
     </tr>

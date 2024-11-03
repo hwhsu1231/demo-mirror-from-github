@@ -66,25 +66,34 @@ jobs:
         id: gvl
         shell: bash
         run: |
+          # JQ_FILE="mirrors.json"
+          # JQ_FILTER=".mirrors | map(.SERVER)"
+          # SERVER_LIST=$(jq -c "${JQ_FILTER}" "${JQ_FILE}")
+          # echo "SERVER_LIST=${SERVER_LIST}" >> ${GITHUB_OUTPUT}
+          # echo "SERVER_LIST:"
+          # echo "${SERVER_LIST}" | jq "."
           JQ_FILE="mirrors.json"
-          JQ_FILTER=".mirrors | map(.SERVER)"
+          JQ_FILTER=".mirrors | map({
+            server: .SERVER,
+            repository: if .REPOSITORY == \"[default]\" then \"${{ github.repository }}\" else .REPOSITORY end
+          })"
           SERVER_LIST=$(jq -c "${JQ_FILTER}" "${JQ_FILE}")
           echo "SERVER_LIST=${SERVER_LIST}" >> ${GITHUB_OUTPUT}
           echo "SERVER_LIST:"
           echo "${SERVER_LIST}" | jq "."
 
-  matrix:
-    needs: get-matrix
-    concurrency:
-      group: ${{ github.workflow }}-${{ matrix.SERVER }}
-      cancel-in-progress: true
-    strategy:
-      matrix:
-        SERVER: ${{ fromJSON(needs.get-matrix.outputs.SERVER_LIST) }}
-      fail-fast: false
-    uses: ./.github/workflows/use-mirror-repository.yml
-    with:
-      GIT_TARGET_SERVER: ${{ matrix.SERVER }}
-      GIT_TARGET_REPO: ${{ github.repository }}
-    secrets:
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  # matrix:
+  #   needs: get-matrix
+  #   concurrency:
+  #     group: ${{ github.workflow }}-${{ matrix.SERVER }}
+  #     cancel-in-progress: true
+  #   strategy:
+  #     matrix:
+  #       SERVER: ${{ fromJSON(needs.get-matrix.outputs.SERVER_LIST) }}
+  #     fail-fast: false
+  #   uses: ./.github/workflows/use-mirror-repository.yml
+  #   with:
+  #     GIT_TARGET_SERVER: ${{ matrix.SERVER }}
+  #     GIT_TARGET_REPO: ${{ github.repository }}
+  #   secrets:
+  #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

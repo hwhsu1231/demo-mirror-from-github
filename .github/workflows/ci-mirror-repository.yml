@@ -104,10 +104,10 @@ jobs:
               .mirrors[] | {
                 SERVER: .SERVER,
                 REPOSITORY: (
-                  if .REPOSITORY == \"[default]\" then
-                    \"${GITHUB_REPOSITORY}\"
-                  else
+                  if .REPOSITORY != \"[default]\" then
                     .REPOSITORY
+                  else
+                    \"${GITHUB_REPOSITORY}\"
                   end
                 )
               }

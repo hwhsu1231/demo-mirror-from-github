@@ -79,6 +79,7 @@ jobs:
           }"
           JQ_FILE="mirrors.json"
           MATRIX=$(jq -c "${JQ_FILTER}" "${JQ_FILE}")
+          echo "MATRIX=${MATRIX}" >> ${GITHUB_OUTPUT}
           echo "MATRIX:"
           echo "${MATRIX}" | jq "."
 

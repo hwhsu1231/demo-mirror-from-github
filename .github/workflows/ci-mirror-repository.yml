@@ -2,7 +2,7 @@ name: ci-mirror-repository
 
 on:
   push:
-    branches: 
+    branches:
       - master
   schedule:
     - cron: '20 20 * * *'

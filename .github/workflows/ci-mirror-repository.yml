@@ -37,13 +37,14 @@ jobs:
         id: gvl
         shell: bash
         run: |
+          DEFAULT_REPO="${{ github.repository }}"
           JQ_FILTER="{
             include: [
               .mirrors[] | {
                 SERVER: .SERVER,
                 REPO: (
                   if .REPO != \"[default]\" then .REPO
-                  else \"${{ github.repository }}\" end
+                  else \"${DEFAULT_REPO}\" end
                 )
               }
             ]

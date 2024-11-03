@@ -2,39 +2,39 @@
   "mirrors" : [
     {
       "SERVER" : "gitlab.com",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "bitbucket.org",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "gitcode.com",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "gitee.com",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "atomgit.com",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "gitflic.ru",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "gitea.com",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "codeberg.org",
-      "REPOSITORY" : "[default]"
+      "REPO" : "[default]"
     },
     {
       "SERVER" : "gitlab.kitware.com",
-      "REPOSITORY" : "haoweihsu/demo-mirror-from-github"
+      "REPO" : "haoweihsu/demo-mirror-from-github"
     }
   ]
 }

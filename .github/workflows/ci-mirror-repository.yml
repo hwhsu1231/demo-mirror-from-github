@@ -70,12 +70,9 @@ jobs:
             include: [
               .mirrors[] | {
                 SERVER: .SERVER,
-                REPOSITORY: (
-                  if .REPOSITORY != \"[default]\" then
-                    .REPOSITORY
-                  else
-                    \"${{ github.repository }}\"
-                  end
+                REPO: (
+                  if .REPO != \"[default]\" then .REPO
+                  else \"${{ github.repository }}\" end
                 )
               }
             ]
@@ -96,6 +93,6 @@ jobs:
     uses: ./.github/workflows/use-mirror-repository.yml
     with:
       GIT_TARGET_SERVER: ${{ matrix.SERVER }}
-      GIT_TARGET_REPO: ${{ github.repository }}
+      GIT_TARGET_REPO: ${{ matrix.REPO }}
     secrets:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}

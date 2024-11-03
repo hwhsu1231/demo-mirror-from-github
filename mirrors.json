@@ -6,7 +6,7 @@
     },
     {
       "SERVER" : "bitbucket.org",
-      "REPO" : "[default]"
+      "REPO" : "hwhsu1231-demo/demo-mirror-from-github"
     },
     {
       "SERVER" : "gitcode.com",
@@ -31,10 +31,6 @@
     {
       "SERVER" : "codeberg.org",
       "REPO" : "[default]"
-    },
-    {
-      "SERVER" : "gitlab.kitware.com",
-      "REPO" : "haoweihsu/demo-mirror-from-github"
     }
   ]
 }

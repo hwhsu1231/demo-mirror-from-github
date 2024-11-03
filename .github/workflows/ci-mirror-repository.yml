@@ -103,7 +103,7 @@ jobs:
             include: [
               .mirrors[] | {
                 SERVER: .SERVER,
-                REPOSITORY: (if .REPOSITORY == "[default]" then ${GITHUB_REPOSITORY} else .REPOSITORY end)
+                REPOSITORY: (if .REPOSITORY == \"[default]\" then ${GITHUB_REPOSITORY} else .REPOSITORY end)
               }
             ]
           }"

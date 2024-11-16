@@ -3,7 +3,7 @@ name: ci-mirror-repository
 on:
   push:
     branches:
-      - master
+      - main
   schedule:
     - cron: '20 20 * * *'
   workflow_dispatch:

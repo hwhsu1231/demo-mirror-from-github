@@ -7,7 +7,7 @@ on:
   # Triggers the workflow when README changes are pushed to the 'source' branch.
   push:
     branches:
-      - 'source'
+      - 'main'
     paths:
       - 'README.md'
   # Triggers the workflow based on a schedule.

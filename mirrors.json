@@ -5,10 +5,6 @@
       "REPO" : "[default]"
     },
     {
-      "SERVER" : "bitbucket.org",
-      "REPO" : "hwhsu1231-demo/demo-mirror-from-github"
-    },
-    {
       "SERVER" : "gitcode.com",
       "REPO" : "[default]"
     },

@@ -52,7 +52,7 @@
 ## Links
 
 <div align="center">
-  <table style="margin: 0 auto;">
+  <table>
     <tbody>
       <!-- Row 1 -->
       <tr>

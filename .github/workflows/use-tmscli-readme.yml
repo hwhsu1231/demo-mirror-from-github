@@ -84,17 +84,17 @@ jobs:
           fetch-depth: 0
 
       - name: Install Crowdin
-        uses: ./.github/actions/install-crowdin@main
+        uses: ./.github/actions/install-crowdin
 
       - name: Get the Crowdin Language List from languages.json
         id: gcll
-        uses: ./.github/actions/get-crowdin-language-list-from-languages-file@main
+        uses: ./.github/actions/get-crowdin-language-list-from-languages-file
         with:
           language: ${{ inputs.LANGUAGE }}
 
       - name: Upload Sources of the '${{ inputs.VERSION }}' branch to Crowdin
         continue-on-error: true
-        uses: ./.github/actions/crowdin-upload-sources@main
+        uses: ./.github/actions/crowdin-upload-sources
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
           crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
@@ -107,7 +107,7 @@ jobs:
 
       - name: Delete the '${{ inputs.VERSION }}' branch in Crowdin
         if: ${{ inputs.VERSION != 'readme' }}
-        uses: ./.github/actions/crowdin-branch-delete@main
+        uses: ./.github/actions/crowdin-branch-delete
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
           crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
@@ -118,7 +118,7 @@ jobs:
 
       - name: Download Translations of the '${{ inputs.VERSION }}' branch from Crowdin
         if: ${{ inputs.VERSION == 'readme' }}
-        uses: ./.github/actions/crowdin-download-translations@main
+        uses: ./.github/actions/crowdin-download-translations
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
           crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
@@ -130,7 +130,7 @@ jobs:
       - name: Get the Crowdin Status Progress of the '${{ inputs.VERSION }}' branch
         id: gtpp
         if: ${{ inputs.VERSION == 'readme' }}
-        uses: ./.github/actions/get-crowdin-status-progress@main
+        uses: ./.github/actions/get-crowdin-status-progress
         with:
           crowdin-branch-name: ${{ inputs.VERSION }}
           crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

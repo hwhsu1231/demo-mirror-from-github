@@ -1,0 +1,118 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: crowdin-download-translations
+
+description: Download Translations from Crowdin
+
+inputs:
+  crowdin-config-file:
+    required: false
+    description: The path to the Crowdin configuration file.
+    default: ''
+  crowdin-branch-name:
+    required: false
+    description: The branch name in Crowdin.
+    default: ''
+  crowdin-personal-token:
+    required: false
+    description: Your personal access token for Crowdin.
+    default: ''
+  crowdin-language-list:
+    required: false
+    description: Comma-separated list of languages to download.
+    default: ''
+  crowdin-export-only-approved:
+    required: false
+    description: Whether to export only approved translations.
+    default: 'false'
+  crowdin-no-progress:
+    required: false
+    description: Disable the progress bar.
+    default: 'false'
+  crowdin-verbose:
+    required: false
+    description: Enable verbose logging.
+    default: 'false'
+  crowdin-dryrun:
+    required: false
+    description: Perform a dry run without downloading files.
+    default: 'false'
+  working-directory:
+    required: false
+    description: The root directory from which to run commands or find files.
+    default: '${{ github.workspace }}'
+
+runs:
+  using: composite
+  steps:
+    - name: Get the Crowdin Arguments by Inputs
+      id: crowdin-args
+      shell: bash
+      run: |
+        INPUTS_JSON=$(echo '${{ toJSON(inputs) }}' | jq -c)
+        INPUTS_KEYS=$(echo "${INPUTS_JSON}" | jq -r 'keys[]' | tr -d '\r')
+        CROWDIN_ARGS=()
+        for KEY in ${INPUTS_KEYS}; do
+          VALUE=$(echo "${INPUTS_JSON}" | jq -r --arg key "${KEY}" '.[$key]')
+          CROWDIN_ARG=""
+          if [[ "${KEY}" == "crowdin-config-file" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_CONFIG_FILE=$(echo "${{ inputs.crowdin-config-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+              CROWDIN_ARG="--config=${CROWDIN_CONFIG_FILE}"
+            fi
+          elif [[ "${KEY}" == "crowdin-branch-name" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_BRANCH_NAME="${{ inputs.crowdin-branch-name }}"
+              CROWDIN_ARG="--branch=${CROWDIN_BRANCH_NAME}"
+            fi
+          elif [[ "${KEY}" == "crowdin-personal-token" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_PERSONAL_TOKEN="${{ inputs.crowdin-personal-token }}"
+              CROWDIN_ARG="--token=${CROWDIN_PERSONAL_TOKEN}"
+            fi
+          elif [[ "${KEY}" == "crowdin-language-list" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              IFS="," read -r -a CROWDIN_LANGUAGE_LIST <<< "${{ inputs.crowdin-language-list }}"
+              for CROWDIN_LANGUAGE in "${CROWDIN_LANGUAGE_LIST[@]}"; do
+                if [[ -z ${CROWDIN_ARG} ]]; then
+                  CROWDIN_ARG="--language=${CROWDIN_LANGUAGE}"
+                else
+                  CROWDIN_ARG="${CROWDIN_ARG} --language=${CROWDIN_LANGUAGE}"
+                fi
+              done
+            fi
+          elif [[ "${KEY}" == "crowdin-export-only-approved" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--export-only-approved"
+            fi
+          elif [[ "${KEY}" == "crowdin-no-progress" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--no-progress"
+            fi
+          elif [[ "${KEY}" == "crowdin-verbose" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--verbose"
+            fi
+          elif [[ "${KEY}" == "crowdin-dryrun" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--dryrun"
+            fi
+          fi
+          CROWDIN_ARGS+=(${CROWDIN_ARG})
+        done
+        echo "CROWDIN_ARGS=${CROWDIN_ARGS[@]}" >> ${GITHUB_OUTPUT}
+        echo "CROWDIN_ARGS:"
+        echo "${CROWDIN_ARGS[@]}"
+
+    - name: Download Translations from Crowdin
+      shell: bash
+      run: |
+        WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+        CROWDIN_ARGS="${{ steps.crowdin-args.outputs.CROWDIN_ARGS }}"
+        cd "${WORKING_DIRECTORY}"
+        echo "Downloading Translations from Crowdin..."
+        echo ""
+        echo "crowdin download ${CROWDIN_ARGS[@]}"
+        echo ""
+        crowdin download ${CROWDIN_ARGS[@]}

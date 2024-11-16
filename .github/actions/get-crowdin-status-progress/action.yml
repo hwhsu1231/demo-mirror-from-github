@@ -1,0 +1,102 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: get-crowdin-status-progress
+
+description: Get the Crowdin Status Progress
+
+inputs:
+  crowdin-config-file:
+    required: false
+    description: xxx
+    default: ''
+  crowdin-branch-name:
+    required: false
+    description: xxx
+    default: ''
+  crowdin-personal-token:
+    required: false
+    description: xxx
+    default: ''
+  crowdin-no-progress:
+    required: false
+    description: xxx
+    default: 'false'
+  crowdin-verbose:
+    required: false
+    description: xxx
+    default: 'false'
+  crowdin-dryrun:
+    required: false
+    description: xxx
+    default: 'false'
+  working-directory:
+    required: false
+    description: The directory from which to run commands or locate files.
+    default: '${{ github.workspace }}'
+
+outputs:
+  CROWDIN_STATUS_PROGRESS:
+    value: ${{ steps.gcsp.outputs.CROWDIN_STATUS_PROGRESS }}
+    description: xxx
+
+runs:
+  using: composite
+  steps:
+    - name: Get the Crowdin Arguments by Inputs
+      id: crowdin-args
+      shell: bash
+      run: |
+        INPUTS_JSON=$(echo '${{ toJSON(inputs) }}' | jq -c)
+        INPUTS_KEYS=$(echo "${INPUTS_JSON}" | jq -r 'keys[]' | tr -d '\r')
+        CROWDIN_ARGS=()
+        for KEY in ${INPUTS_KEYS}; do
+          VALUE=$(echo "${INPUTS_JSON}" | jq -r --arg key "${KEY}" '.[$key]')
+          CROWDIN_ARG=""
+          if [[ "${KEY}" == "crowdin-config-file" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_CONFIG_FILE=$(echo "${{ inputs.crowdin-config-file }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+              CROWDIN_ARG="--config=${CROWDIN_CONFIG_FILE}"
+            fi
+          elif [[ "${KEY}" == "crowdin-branch-name" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_BRANCH_NAME="${{ inputs.crowdin-branch-name }}"
+              CROWDIN_ARG="--branch=${CROWDIN_BRANCH_NAME}"
+            fi
+          elif [[ "${KEY}" == "crowdin-personal-token" ]]; then
+            if [[ "${VALUE}" != "" ]]; then
+              CROWDIN_PERSONAL_TOKEN="${{ inputs.crowdin-personal-token }}"
+              CROWDIN_ARG="--token=${CROWDIN_PERSONAL_TOKEN}"
+            fi
+          elif [[ "${KEY}" == "crowdin-no-progress" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--no-progress"
+            fi
+          elif [[ "${KEY}" == "crowdin-verbose" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--verbose"
+            fi
+          elif [[ "${KEY}" == "crowdin-dryrun" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+              CROWDIN_ARG="--dryrun"
+            fi
+          fi
+          CROWDIN_ARGS+=(${CROWDIN_ARG})
+        done
+        echo "CROWDIN_ARGS=${CROWDIN_ARGS[@]}" >> ${GITHUB_OUTPUT}
+
+    - name: Get the Crowdin Status Progress
+      id: gcsp
+      shell: bash
+      run: |
+        WORKING_DIRECTORY=$(echo "${{ inputs.working-directory }}" | sed 's#\\#/#g' | sed 's#^\([A-Za-z]\):#/\L\1#')
+        cd ${WORKING_DIRECTORY}
+        CROWDIN_STATUS_ARGS="${{ steps.crowdin-args.outputs.CROWDIN_ARGS }}"
+        CROWDIN_STATUS_OUTPUTS=$(crowdin status ${CROWDIN_STATUS_ARGS[@]} 2>&1)
+        CROWDIN_STATUS_PROGRESS=$(echo "${CROWDIN_STATUS_OUTPUTS}" | sed '/Fetching project info/d' | sed 's/\t/  /g')
+        DELIMITER="$(openssl rand -hex 8)"
+        echo "CROWDIN_STATUS_PROGRESS<<${DELIMITER}"    >> ${GITHUB_OUTPUT}
+        echo "${CROWDIN_STATUS_PROGRESS}"               >> ${GITHUB_OUTPUT}
+        echo "${DELIMITER}"                             >> ${GITHUB_OUTPUT}
+        echo "CROWDIN_STATUS_PROGRESS:"
+        echo "${CROWDIN_STATUS_PROGRESS}"

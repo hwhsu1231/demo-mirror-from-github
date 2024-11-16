@@ -51,7 +51,7 @@
 
 ## Links
 
-<table align="center">
+<table style="margin: 0 auto;">
   <tbody>
     <!-- Row 1 -->
     <tr>
@@ -112,7 +112,7 @@
 
 ## Links 2
 
-<table align="center">
+<table style="margin: 0 auto;">
   <tbody>
     <!-- Main -->
     <tr>

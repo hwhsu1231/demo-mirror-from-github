@@ -34,7 +34,7 @@
   </table>
 </div>
 
-> [!備註]  
+> [!NOTE]  
 > Highlights information that users should take into account, even when skimming.
 
 > [!TIP]  
@@ -43,7 +43,7 @@
 > [!IMPORTANT]  
 > Crucial information necessary for users to succeed.
 
-> [!警告]  
+> [!WARNING]  
 > Critical content demanding immediate user attention due to potential risks.
 
 > [!CAUTION]  

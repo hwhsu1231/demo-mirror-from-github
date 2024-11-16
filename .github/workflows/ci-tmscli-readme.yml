@@ -1,0 +1,108 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: ci-tmscli-readme
+
+on:
+  # Triggers the workflow when README changes are pushed to the 'source' branch.
+  push:
+    branches:
+      - 'source'
+    paths:
+      - 'README.md'
+  # Triggers the workflow based on a schedule.
+  schedule:
+    - cron: '0 0 * * 1'
+  # Triggers the workflow manually through the GitHub UI.
+  workflow_dispatch:
+    inputs:
+      LANGUAGE:
+        description: 'LANGUAGE input'
+        required: true
+        type: string
+        default: 'all'
+
+jobs:
+  precondition:
+    if: ${{ ( github.event_name == 'push' ) ||
+            ( github.event_name == 'schedule' ) ||
+            ( github.event_name == 'workflow_dispatch' ) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Contexts/Inputs/Variables/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.schedule = ${{ github.event.schedule }}"
+          echo "[Inputs]"
+          echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
+          echo "[Variables]"
+          echo "vars.ACTOR_ID = ${{ vars.ACTOR_ID }}"
+          echo "vars.ACTOR_NAME = ${{ vars.ACTOR_NAME }}"
+          echo "vars.ACTOR_LOGIN = ${{ vars.ACTOR_LOGIN }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+          echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
+      - name: Check Variables
+        shell: bash
+        run: |
+          VARIABLES_EXIST=true
+          if [[ -z "${{ vars.ACTOR_ID }}" ]]; then
+            echo "vars.ACTOR_ID is missing."
+            VARIABLES_EXIST=false
+          fi
+          if [[ -z "${{ vars.ACTOR_NAME }}" ]]; then
+            echo "vars.ACTOR_NAME is missing."
+            VARIABLES_EXIST=false
+          fi
+          if [[ -z "${{ vars.ACTOR_LOGIN }}" ]]; then
+            echo "vars.ACTOR_LOGIN is missing."
+            VARIABLES_EXIST=false
+          fi
+          if [[ "${VARIABLES_EXIST}" == "false" ]]; then
+            echo "Error: Some variables are missing." >&2
+            exit 1
+          fi
+      - name: Check Secrets
+        shell: bash
+        run: |
+          SECRETS_EXIST=true
+          if [[ -z "${{ secrets.ACTOR_GITHUB_TOKEN }}" ]]; then
+            echo "secrets.ACTOR_GITHUB_TOKEN is missing."
+            SECRETS_EXIST=false
+          fi
+          if [[ -z "${{ secrets.CROWDIN_PERSONAL_TOKEN }}" ]]; then
+            echo "secrets.CROWDIN_PERSONAL_TOKEN is missing."
+            SECRETS_EXIST=false
+          fi
+          if [[ "${SECRETS_EXIST}" == "false" ]]; then
+            echo "Error: Some secrets are missing." >&2
+            exit 1
+          fi
+
+  caller:
+    needs: [ 'precondition' ]
+    if: ${{ ( github.event_name == 'push' ) ||
+            ( github.event_name == 'schedule' ) ||
+            ( github.event_name == 'workflow_dispatch' ) }}
+    concurrency:
+      group: ${{ github.workflow }}
+      cancel-in-progress: true
+    uses: ./.github/workflows/use-tmscli-readme.yml@main
+    with:
+      RUNNER: 'ubuntu-latest'
+      CHECKOUT: ${{ github.ref }}
+      VERSION: 'readme'
+      LANGUAGE: ${{ inputs.LANGUAGE || 'all' }}
+      CALLER_JOB: 'caller'
+      ENABLE_JOB: true
+      ACTOR_ID: ${{ vars.ACTOR_ID }}
+      ACTOR_NAME: ${{ vars.ACTOR_NAME }}
+      ACTOR_LOGIN: ${{ vars.ACTOR_LOGIN }}
+    secrets:
+      ACTOR_GITHUB_TOKEN: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+      CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

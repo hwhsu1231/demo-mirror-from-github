@@ -1,0 +1,182 @@
+# Distributed under the OSI-approved BSD 3-Clause License.
+# See accompanying file LICENSE.txt for details.
+
+name: use-tmscli-readme
+
+on:
+  workflow_call:
+    inputs:
+      RUNNER:
+        type: string
+        required: true  # [required]
+      CHECKOUT:
+        type: string
+        required: true  # [required]
+      VERSION:
+        type: string
+        required: true  # [required]
+      LANGUAGE:
+        type: string
+        required: true  # [required]
+      CALLER_JOB:
+        type: string
+        required: true  # [required]
+      ENABLE_JOB:
+        type: boolean
+        required: true  # [required]
+      ACTOR_ID:
+        type: string
+        required: true  # [required]
+      ACTOR_NAME:
+        type: string
+        required: true  # [required]
+      ACTOR_LOGIN:
+        type: string
+        required: true  # [required]
+    secrets:
+      ACTOR_GITHUB_TOKEN:
+        required: true
+      CROWDIN_PERSONAL_TOKEN:
+        required: true
+
+jobs:
+  tmscli-readme:
+    if: ${{ inputs.ENABLE_JOB }}
+    runs-on: ${{ inputs.RUNNER }}
+    steps:
+      - name: Print Contexts/Inputs/Secrets
+        shell: bash
+        run: |
+          echo "[Contexts]"
+          echo "github.job = ${{ github.job }}"
+          echo "github.ref = ${{ github.ref }}"
+          echo "github.ref_name = ${{ github.ref_name }}"
+          echo "github.event_name = ${{ github.event_name }}"
+          echo "github.event.action = ${{ github.event.action }}"
+          echo "github.event.number = ${{ github.event.number }}"
+          echo "github.workflow = ${{ github.workflow }}"
+          echo "github.workflow_ref = ${{ github.workflow_ref }}"
+          echo "github.run_id = ${{ github.run_id }}"
+          echo "github.run_number = ${{ github.run_number }}"
+          echo "github.run_attempt = ${{ github.run_attempt }}"
+          echo "github.server_url = ${{ github.server_url }}"
+          echo "github.repository = ${{ github.repository }}"
+          echo "github.workspace = ${{ github.workspace }}"
+          echo "[Inputs]"
+          echo "inputs.RUNNER = ${{ inputs.RUNNER }}"
+          echo "inputs.CHECKOUT = ${{ inputs.CHECKOUT }}"
+          echo "inputs.VERSION = ${{ inputs.VERSION }}"
+          echo "inputs.LANGUAGE = ${{ inputs.LANGUAGE }}"
+          echo "inputs.CALLER_JOB = ${{ inputs.CALLER_JOB }}"
+          echo "inputs.ENABLE_JOB = ${{ inputs.ENABLE_JOB }}"
+          echo "inputs.ACTOR_ID = ${{ inputs.ACTOR_ID }}"
+          echo "inputs.ACTOR_NAME = ${{ inputs.ACTOR_NAME }}"
+          echo "inputs.ACTOR_LOGIN = ${{ inputs.ACTOR_LOGIN }}"
+          echo "[Secrets]"
+          echo "secrets.ACTOR_GITHUB_TOKEN = ${{ secrets.ACTOR_GITHUB_TOKEN }}"
+          echo "secrets.CROWDIN_PERSONAL_TOKEN = ${{ secrets.CROWDIN_PERSONAL_TOKEN }}"
+
+      - name: Checkout to '${{ inputs.CHECKOUT }}'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.CHECKOUT }}
+          token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Install Crowdin
+        uses: ./.github/actions/install-crowdin@main
+
+      - name: Get the Crowdin Language List from languages.json
+        id: gcll
+        uses: ./.github/actions/get-crowdin-language-list-from-languages-file@main
+        with:
+          language: ${{ inputs.LANGUAGE }}
+
+      - name: Upload Sources of the '${{ inputs.VERSION }}' branch to Crowdin
+        continue-on-error: true
+        uses: ./.github/actions/crowdin-upload-sources@main
+        with:
+          crowdin-branch-name: ${{ inputs.VERSION }}
+          crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          crowdin-no-progress: 'true'
+          crowdin-verbose: 'true'
+
+      #
+      # If the '${{ inputs.VERSION }}' is NOT 'readme', then...
+      #
+
+      - name: Delete the '${{ inputs.VERSION }}' branch in Crowdin
+        if: ${{ inputs.VERSION != 'readme' }}
+        uses: ./.github/actions/crowdin-branch-delete@main
+        with:
+          crowdin-branch-name: ${{ inputs.VERSION }}
+          crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      #
+      # If the '${{ inputs.VERSION }}' is 'readme', then...
+      #
+
+      - name: Download Translations of the '${{ inputs.VERSION }}' branch from Crowdin
+        if: ${{ inputs.VERSION == 'readme' }}
+        uses: ./.github/actions/crowdin-download-translations@main
+        with:
+          crowdin-branch-name: ${{ inputs.VERSION }}
+          crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          crowdin-language-list: ${{ steps.gcll.outputs.CROWDIN_LANGUAGE_LIST }}
+          crowdin-export-only-approved: 'true'
+          crowdin-no-progress: 'true'
+          crowdin-verbose: 'true'
+
+      - name: Get the Crowdin Status Progress of the '${{ inputs.VERSION }}' branch
+        id: gtpp
+        if: ${{ inputs.VERSION == 'readme' }}
+        uses: ./.github/actions/get-crowdin-status-progress@main
+        with:
+          crowdin-branch-name: ${{ inputs.VERSION }}
+          crowdin-personal-token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+          crowdin-no-progress: 'true'
+          crowdin-verbose: 'true'
+
+      - name: Get the Current Job's ID
+        id: gcji
+        if: ${{ inputs.VERSION == 'readme' }}
+        uses: Tiryoh/gha-jobid-action@v1
+        with:
+          github_token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+          job_name: '${{ inputs.CALLER_JOB }} / ${{ github.job }}'
+          per_page: 100
+
+      - name: Set up mutex for the 'source' branch
+        if: ${{ inputs.VERSION == 'readme' }}
+        uses: ben-z/gh-action-mutex@v1.0.0-alpha.9
+        with:
+          branch: 'mutex/source'
+          repo-token: ${{ secrets.ACTOR_GITHUB_TOKEN }}
+
+      - name: Add and Commit Changes
+        id: acc
+        if: ${{ inputs.VERSION == 'readme' }}
+        uses: EndBug/add-and-commit@v9
+        with:
+          cwd: '.'
+          add: '.'
+          pull: '--rebase --autostash'
+          author_name: ${{ inputs.ACTOR_NAME }}
+          author_email: ${{ inputs.ACTOR_ID }}+${{ inputs.ACTOR_LOGIN }}@users.noreply.github.com
+          message: |
+            tr(${{ inputs.VERSION }}): pull ${{ inputs.LANGUAGE }} translations from Crowdin
+
+            ${{ steps.gtpp.outputs.CROWDIN_STATUS_PROGRESS }}
+
+            Created by GitHub Workflows:
+
+            - File: ${{ github.server_url }}/${{ github.repository }}/actions/workflows/${{ github.workflow }}.yml
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+            - Job: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/job/${{ steps.gcji.outputs.job_id }}
+
+      - name: Check Outputs of the Commit
+        if: ${{ inputs.VERSION == 'readme' && steps.acc.outputs.committed == 'true' }}
+        shell: bash
+        run: |
+          echo "Commit's SHA = ${{ steps.acc.outputs.commit_long_sha }}"
+          echo "Commit's URL = ${{ github.server_url }}/${{ github.repository }}/commit/${{ steps.acc.outputs.commit_long_sha }}"

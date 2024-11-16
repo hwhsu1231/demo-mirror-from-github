@@ -1,0 +1,14 @@
+{
+  "ja_JP" : {
+    "crowdin" : "ja"
+  },
+  "ru_RU" : {
+    "crowdin" : "ru"
+  },
+  "zh_CN" : {
+    "crowdin" : "zh-CN"
+  },
+  "zh_TW" : {
+    "crowdin" : "zh-TW"
+  }
+}

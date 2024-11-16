@@ -92,7 +92,7 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}
       cancel-in-progress: true
-    uses: ./.github/workflows/use-tmscli-readme.yml@main
+    uses: ./.github/workflows/use-tmscli-readme.yml
     with:
       RUNNER: 'ubuntu-latest'
       CHECKOUT: ${{ github.ref }}

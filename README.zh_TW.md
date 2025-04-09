@@ -1,4 +1,4 @@
-# Demo mirror from GitHub
+# 示範從 GitHub 鏡像
 
 <ul>
   <li><a href="./README.md"><code>en_US</code> : English</a></li>
@@ -63,7 +63,7 @@
 > [!CAUTION]
 > Negative potential consequences of an action.
 
-## Links
+## 連結
 
 <div align="center">
   <table>
